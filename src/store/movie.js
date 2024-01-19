@@ -7,9 +7,15 @@ export default {
         type: 'movie',
         loading: false,
         movies: [],
+        page: 1,
+        lastPage: null,
         noResults: null,
     }),
-    getters: {},
+    getters: {
+        isLastPage(state) {
+            return state.page >= state.lastPage;
+        },
+    },
     mutations: {
         updateState(state, payload) {
             Object.keys(payload).forEach((key) => {
@@ -21,13 +27,14 @@ export default {
         },
     },
     actions: {
-        async fetchMovies({ state, commit }, page) {
+        async fetchMovies({ state, commit }) {
+            commit('updateState', { loading: true });
             try {
                 const res = await axios.get(
-                    `http://www.omdbapi.com/?i=tt3896198&apikey=95aa07e&s=${state.title}&type=${state.type}&page=${page}`
+                    `http://www.omdbapi.com/?i=tt3896198&apikey=95aa07e&s=${state.title}&type=${state.type}&page=${state.page}`
                 );
-                if (res.data.Response === 'True') {
-                    commit('updateState', { noResults: false });
+                if (res.data.Search) {
+                    commit('updateState', { noResults: false, page: state.page + 1 });
                     commit('pushIntoMovies', res.data.Search);
                     return res.data;
                 } else {
@@ -35,23 +42,17 @@ export default {
                     return;
                 }
             } catch (err) {
-                return err;
+                console.log(err);
             } finally {
                 commit('updateState', { loading: false });
             }
         },
-        async searchMovies({ commit, dispatch }) {
-            commit('updateState', { movies: [], loading: true });
-            const data = await dispatch('fetchMovies', 1);
+        async searchMovies({ state, commit, dispatch }) {
+            commit('updateState', { movies: [], page: 1, loading: true });
+            const data = await dispatch('fetchMovies', state.page);
             if (data) {
                 const lastPage = Math.ceil(parseInt(data.totalResults) / 10);
-                // 최대 40개까지 fetch
-                for (let i = 2; i < lastPage; i++) {
-                    if (i > 4) break;
-                    else {
-                        await dispatch('fetchMovies', i);
-                    }
-                }
+                commit('updateState', { lastPage });
             }
         },
     },
