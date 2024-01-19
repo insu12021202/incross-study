@@ -1,3 +1,1 @@
-# incross-study
-
-incross 스터디 결과물 저장소
+# Vue Movie App v1.0
