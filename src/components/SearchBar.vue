@@ -1,11 +1,14 @@
 <template>
     <div>
-        <v-text-field v-model="title" outlined @keypress.enter="searchMovies">
+        <v-text-field v-model="title" outlined clearable @keypress.enter="searchMovies">
             <template v-slot:prepend-inner>
                 <v-icon>search</v-icon>
             </template>
             <template v-slot:append>
                 <v-progress-circular v-if="loading" size="24" color="primary" indeterminate></v-progress-circular>
+            </template>
+            <template v-slot:append-inner>
+                <v-icon>search</v-icon>
             </template>
         </v-text-field>
     </div>
