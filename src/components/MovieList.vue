@@ -16,8 +16,9 @@
         </v-row>
         <div class="footer-wrapper">
             <v-progress-circular v-if="loading" size="24" color="primary" indeterminate></v-progress-circular>
-            <div class="no-result" v-if="noResults">검색 결과가 없습니다.</div>
+            <div class="no-result" v-if="noResults">검색 결과가 존재하지 않습니다.</div>
         </div>
+        <v-icon size="50" v-show="isToTopVisible" @click="scrollToTop" class="to-top">expand_less</v-icon>
     </div>
 </template>
 
@@ -29,6 +30,11 @@ export default {
     },
     beforeDestroy() {
         window.removeEventListener('scroll', this.handleScroll);
+    },
+    data() {
+        return {
+            isToTopVisible: false,
+        };
     },
     computed: {
         ...mapState('movie', ['movies', 'loading', 'noResults', 'page', 'totalResults']),
@@ -43,11 +49,16 @@ export default {
             return url === 'N/A' ? 100 : 300;
         },
         handleScroll() {
+            this.isToTopVisible = window.scrollY > 200;
+
             let bottomOfWindow =
                 document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
             if (bottomOfWindow && !this.isLastPage) {
                 this.fetchMovies();
             }
+        },
+        scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         },
     },
 };
@@ -68,5 +79,15 @@ export default {
     align-items: center;
     width: 100%;
     height: 100px;
+}
+.to-top {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
 </style>

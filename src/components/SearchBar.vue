@@ -7,12 +7,8 @@
                 </template>
                 <template v-slot:append>
                     <v-progress-circular v-if="loading" size="24" color="primary" indeterminate></v-progress-circular>
-                </template>
-                <template v-slot:append-inner>
-                    <v-icon>search</v-icon>
-                </template>
-            </v-text-field></v-col
-        >
+                </template> </v-text-field
+        ></v-col>
         <v-col cols="3">
             <v-select label="types" :items="filterTypes" v-model="type" @change="searchMovies"></v-select
         ></v-col>
