@@ -8,6 +8,7 @@ export default {
         loading: false,
         movies: [],
         page: 1,
+        totalResults: 0,
         lastPage: null,
         noResults: null,
     }),
@@ -52,7 +53,8 @@ export default {
             const data = await dispatch('fetchMovies', state.page);
             if (data) {
                 const lastPage = Math.ceil(parseInt(data.totalResults) / 10);
-                commit('updateState', { lastPage });
+                const totalResults = data.totalResults;
+                commit('updateState', { lastPage, totalResults });
             }
         },
     },

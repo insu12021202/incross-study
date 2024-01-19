@@ -1,5 +1,6 @@
 <template>
     <div>
+        <p class="result_number"><b>Result:</b> {{ totalResults }}</p>
         <v-row v-masonry item-selector=".item">
             <v-col v-for="(movie, idx) in movies" :key="idx" v-masonry-tile class="item" cols="12" lg="3" md="3" sm="6">
                 <v-card>
@@ -30,7 +31,7 @@ export default {
         window.removeEventListener('scroll', this.handleScroll);
     },
     computed: {
-        ...mapState('movie', ['movies', 'loading', 'noResults', 'page']),
+        ...mapState('movie', ['movies', 'loading', 'noResults', 'page', 'totalResults']),
         ...mapGetters('movie', ['isLastPage']),
     },
     methods: {
@@ -56,6 +57,10 @@ export default {
 .no_img {
     height: 100%;
     background-color: lightgray;
+}
+.result_number {
+    margin-bottom: 10px;
+    text-align: right;
 }
 .footer-wrapper {
     display: flex;
