@@ -16,7 +16,7 @@ export default {
         isLastPage(state) {
             return state.page >= state.lastPage;
         },
-        typeName(state) {
+        typeValue(state) {
             switch (state.type) {
                 case 'All':
                     return '';
@@ -44,7 +44,7 @@ export default {
             commit('updateState', { loading: true });
             try {
                 const res = await axios.get(
-                    `http://www.omdbapi.com/?i=tt3896198&apikey=95aa07e&s=${state.title}&type=${getters.typeName}&page=${state.page}`
+                    `https://www.omdbapi.com/?i=tt3896198&apikey=95aa07e&s=${state.title}&type=${getters.typeValue}&page=${state.page}`
                 );
                 if (res.data.Search) {
                     commit('updateState', { noResults: false, page: state.page + 1 });
