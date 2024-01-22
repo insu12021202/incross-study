@@ -55,6 +55,8 @@ export default {
                 const lastPage = Math.ceil(parseInt(data.totalResults) / 10);
                 const totalResults = data.totalResults;
                 commit('updateState', { lastPage, totalResults });
+            } else {
+                commit('updateState', { totalResults: 0 });
             }
         },
     },
