@@ -20,7 +20,7 @@ import { mapActions } from 'vuex';
 export default {
     data() {
         return {
-            filterTypes: ['movie', 'series', 'episode'],
+            filterTypes: ['All', 'Movie', 'Series', 'Episode'],
         };
     },
     computed: {

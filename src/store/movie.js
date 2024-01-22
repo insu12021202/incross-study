@@ -4,7 +4,7 @@ export default {
     namespaced: true,
     state: () => ({
         title: '',
-        type: 'movie',
+        type: 'All',
         loading: false,
         movies: [],
         page: 1,
@@ -15,6 +15,18 @@ export default {
     getters: {
         isLastPage(state) {
             return state.page >= state.lastPage;
+        },
+        typeName(state) {
+            switch (state.type) {
+                case 'All':
+                    return '';
+                case 'Movie':
+                    return 'movie';
+                case 'Series':
+                    return 'series';
+                case 'Episode':
+                    return 'episode';
+            }
         },
     },
     mutations: {
@@ -28,11 +40,11 @@ export default {
         },
     },
     actions: {
-        async fetchMovies({ state, commit }) {
+        async fetchMovies({ state, commit, getters }) {
             commit('updateState', { loading: true });
             try {
                 const res = await axios.get(
-                    `http://www.omdbapi.com/?i=tt3896198&apikey=95aa07e&s=${state.title}&type=${state.type}&page=${state.page}`
+                    `http://www.omdbapi.com/?i=tt3896198&apikey=95aa07e&s=${state.title}&type=${getters.typeName}&page=${state.page}`
                 );
                 if (res.data.Search) {
                     commit('updateState', { noResults: false, page: state.page + 1 });
