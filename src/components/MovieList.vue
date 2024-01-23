@@ -32,7 +32,7 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 export default {
     mounted() {
-        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('scroll', this.debounce(this.handleScroll, 100));
     },
     beforeDestroy() {
         window.removeEventListener('scroll', this.handleScroll);
@@ -48,6 +48,15 @@ export default {
     },
     methods: {
         ...mapActions('movie', ['fetchMovies']),
+        debounce(callback, limit = 100) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    callback.apply(this, args);
+                }, limit);
+            };
+        },
         poster(url) {
             return url === 'N/A' ? '' : url;
         },
@@ -58,7 +67,7 @@ export default {
             this.isToTopVisible = window.scrollY > 200;
 
             let bottomOfWindow =
-                document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+                document.documentElement.scrollTop + window.innerHeight + 10 >= document.documentElement.offsetHeight;
 
             if (bottomOfWindow && !this.isLastPage) {
                 this.fetchMovies();
