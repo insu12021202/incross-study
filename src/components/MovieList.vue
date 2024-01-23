@@ -1,6 +1,8 @@
 <template>
     <div>
+        <!-- 검색 결과 개수 -->
         <p class="result_number"><b>Result:</b> {{ totalResults }}</p>
+        <!-- 검색 결과 Grid  -->
         <v-row v-masonry item-selector=".item">
             <v-col v-for="(movie, idx) in movies" :key="idx" v-masonry-tile class="item" cols="12" lg="3" md="3" sm="6">
                 <v-card>
@@ -14,10 +16,14 @@
                 </v-card>
             </v-col>
         </v-row>
+        <!-- 검색 결과 footer -->
         <div class="footer-wrapper">
-            <v-progress-circular v-if="loading" size="24" color="primary" indeterminate></v-progress-circular>
+            <!-- 검색 결과 없음 알림 문구 -->
             <div class="no-result" v-if="noResults">검색 결과가 존재하지 않습니다.</div>
+            <!-- 로딩 컴포넌트 -->
+            <v-progress-circular v-if="loading" size="24" color="primary" indeterminate></v-progress-circular>
         </div>
+        <!-- to-top 버튼 -->
         <v-icon size="50" v-show="isToTopVisible" @click="scrollToTop" class="to-top">expand_less</v-icon>
     </div>
 </template>
@@ -52,7 +58,8 @@ export default {
             this.isToTopVisible = window.scrollY > 200;
 
             let bottomOfWindow =
-                document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+                document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+
             if (bottomOfWindow && !this.isLastPage) {
                 this.fetchMovies();
             }
