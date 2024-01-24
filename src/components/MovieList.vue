@@ -32,7 +32,7 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 export default {
     mounted() {
-        window.addEventListener('scroll', this.debounce(this.handleScroll, 100));
+        window.addEventListener('scroll', this.throttle(this.handleScroll, 300));
     },
     beforeDestroy() {
         window.removeEventListener('scroll', this.handleScroll);
@@ -48,13 +48,24 @@ export default {
     },
     methods: {
         ...mapActions('movie', ['fetchMovies']),
-        debounce(callback, limit = 100) {
-            let timeout;
-            return function (...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    callback.apply(this, args);
-                }, limit);
+        throttle(func, limit) {
+            let lastFunc;
+            let lastRan;
+            return function () {
+                const context = this;
+                const args = arguments;
+                if (!lastRan) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                } else {
+                    clearTimeout(lastFunc);
+                    lastFunc = setTimeout(function () {
+                        if (Date.now() - lastRan >= limit) {
+                            func.apply(context, args);
+                            lastRan = Date.now();
+                        }
+                    }, limit - (Date.now() - lastRan));
+                }
             };
         },
         poster(url) {
