@@ -1,21 +1,15 @@
 <template>
     <v-app>
-        <v-container>
-            <!-- 검색 바 -->
-            <search-bar />
-            <!-- 영화 목록 -->
-            <movie-list />
-        </v-container>
+        <div>헤더</div>
+        <RouterView> </RouterView>
     </v-app>
 </template>
 
 <script>
-import SearchBar from '@/components/SearchBar';
-import MovieList from '@/components/MovieList';
+import { RouterView } from 'vue-router';
 export default {
     components: {
-        SearchBar,
-        MovieList,
+        RouterView,
     },
     data() {
         return {};
