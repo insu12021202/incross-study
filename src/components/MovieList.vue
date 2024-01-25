@@ -19,7 +19,7 @@
         <!-- 검색 결과 footer -->
         <div class="footer-wrapper">
             <!-- 검색 결과 없음 알림 문구 -->
-            <div class="no-result" v-if="noResults">검색 결과가 존재하지 않습니다.</div>
+            <div class="no-result" v-if="noResults">There is no search result.</div>
             <!-- 로딩 컴포넌트 -->
             <v-progress-circular v-if="loading" size="24" color="primary" indeterminate></v-progress-circular>
         </div>

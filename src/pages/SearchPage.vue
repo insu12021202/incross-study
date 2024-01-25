@@ -8,5 +8,12 @@
 <script>
 import SearchBar from '@/components/SearchBar';
 import MovieList from '@/components/MovieList';
-export default { components: { SearchBar, MovieList } };
+import store from '@/store';
+
+export default {
+    components: { SearchBar, MovieList },
+    destroyed() {
+        store.commit('movie/initState');
+    },
+};
 </script>

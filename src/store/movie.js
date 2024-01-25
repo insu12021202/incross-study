@@ -38,6 +38,16 @@ export default {
         pushIntoMovies(state, newMovies) {
             state.movies.push(...newMovies);
         },
+        initState(state) {
+            state.title = '';
+            state.movies = [];
+            state.type = 'All';
+            state.loading = false;
+            state.page = 1;
+            state.totalResults = 0;
+            state.lastPage = null;
+            state.noResults = null;
+        },
     },
     actions: {
         async fetchMovies({ state, commit, getters }) {
